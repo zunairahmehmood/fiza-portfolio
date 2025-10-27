@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fizza Ahmed — Web Developer</title>
+  <meta name="description" content="Portfolio of Fizza Ahmed — Web Developer. Clean code, user-centric design, and responsive interfaces." />
+
+  <!-- ====== Styles (All in-file) ====== -->
+  <style>
+    :root{
+      --bg:#060608;            /* near-black */
+      --surface:#0f1114;
+      --muted:#9aa7b6;
+      --accent:#9b59ff;        /* purple accent */
+      --accent-2:#6ee7b7;      /* teal accent for subtle gradients */
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --max-width:1100px;
+      --ff: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--ff);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(155,89,255,0.06), transparent 6%),
+        radial-gradient(900px 400px at 95% 90%, rgba(110,231,183,0.03), transparent 6%),
+        var(--bg);
+      color:#e8eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-top:74px; /* for sticky nav */
+    }
+
+    /* Container */
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:30px;
+    }
+
+    /* ===== Navigation (sticky) ===== */
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1300;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(8,8,10,0.85), rgba(6,6,8,0.7));
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .nav-wrap{
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 20px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .brand .logo{
+      width:46px;height:46px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;color:#071016;font-size:18px;box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    }
+    .brand .name{
+      display:flex;flex-direction:column;line-height:1;
+    }
+    .brand .name .title{font-weight:800;font-size:15px}
+    .brand .name .sub{font-size:12px;color:var(--muted)}
+
+    nav{
+      display:flex;align-items:center;gap:16px;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:700;font-size:14px;padding:8px 10px;border-radius:10px;
+    }
+    nav a:hover{color:var(--accent); background:var(--glass)}
+    nav a.active{color:#071016;background:linear-gradient(90deg,var(--accent),var(--accent-2)); box-shadow:0 8px 22px rgba(12,10,20,0.5)}
+
+    /* Hamburger for mobile */
+    .hamburger{
+      display:none;
+      width:46px;height:46px;border-radius:10px;background:transparent;border:none;
+      align-items:center;justify-content:center;cursor:pointer;
+    }
+    .hamburger .bar{width:22px;height:2px;background:var(--accent);position:relative;display:block;border-radius:2px}
+    .hamburger .bar::before,
+    .hamburger .bar::after{
+      content:"";position:absolute;left:0;width:22px;height:2px;background:var(--accent);border-radius:2px;transition:transform .25s ease, top .25s ease, opacity .2s;
+    }
+    .hamburger .bar::before{top:-7px}
+    .hamburger .bar::after{top:7px}
+    .hamburger.open .bar{background:transparent}
+    .hamburger.open .bar::before{transform:rotate(45deg); top:0}
+    .hamburger.open .bar::after{transform:rotate(-45deg); top:0}
+
+    /* Mobile nav dropdown */
+    .mobile-nav{
+      display:none;
+      position:absolute;
+      right:20px;
+      top:74px;
+      background:linear-gradient(180deg, rgba(12,12,14,0.98), rgba(8,8,10,0.98));
+      border-radius:12px;
+      padding:12px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      min-width:200px;
+      gap:8px;
+    }
+    .mobile-nav a{display:block;padding:10px;border-radius:8px;color:var(--muted)}
+    .mobile-nav a:hover{background:var(--glass);color:var(--accent)}
+
+    /* ===== Hero ===== */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
+      margin-top:6vh;
+      margin-bottom:30px;
+    }
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .hero h1{
+      font-size:30px;margin:0 0 8px 0;line-height:1.05;
+      letter-spacing:-0.02em;
+    }
+    .hero p.lead{color:var(--muted);margin:0 0 18px 0}
+    .cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .btn{
+      padding:10px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:800;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#071016;
+      box-shadow:0 8px 26px rgba(11,5,20,0.55)
+    }
+    .btn.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)
+    }
+
+    /* Avatar card */
+    .avatar-card{
+      display:flex;flex-direction:column;align-items:center;gap:12px;
+      padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .avatar{
+      width:160px;height:160px;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,var(--accent),#6b21a8); box-shadow:0 14px 40px rgba(0,0,0,0.6);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .avatar .name{font-weight:800;margin-top:6px}
+    .role{font-size:13px;color:var(--muted)}
+
+    /* ===== About & Skills ===== */
+    .two-col{
+      display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;margin-top:16px;margin-bottom:24px;
+    }
+    .card{background:var(--surface);padding:20px;border-radius:14px;border:1px solid rgba(255,255,255,0.02)}
+    .about p{color:var(--muted);margin:0 0 12px 0}
+    .values{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006)); padding:8px 12px;border-radius:999px;font-weight:700;color:var(--muted);font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Skills visuals */
+    .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .skill{
+      display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));border:1px solid rgba(255,255,255,0.02)
+    }
+    .skill .label{font-weight:800}
+    .bar-bg{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
+    .bar{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:60%}
+
+    /* ===== Projects (filter + grid) ===== */
+    .projects-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+    .filter-btn.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071016}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .project{
+      border-radius:12px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,0.005), rgba(255,255,255,0.004));border:1px solid rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .project:hover{transform:translateY(-8px); box-shadow: 0 18px 50px rgba(0,0,0,0.7)}
+    .project .thumb{height:160px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, rgba(3,6,12,0.9), rgba(6,8,14,0.9))}
+    .thumb svg{width:88%;height:88%}
+    .project .meta{padding:12px}
+    .project .title{font-weight:900;margin:0 0 6px 0}
+    .project .desc{font-size:13px;color:var(--muted);margin:0 0 12px 0}
+    .project .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:10px;background:rgba(0,0,0,0.35);color:var(--muted)}
+
+    .project .links{display:flex;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,0.02)}
+    .link{flex:1;text-align:center;padding:8px;border-radius:8px;text-decoration:none;font-weight:800;background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+    .link:hover{color:var(--accent);border-color:rgba(155,89,255,0.12)}
+
+    /* Empty state */
+    .empty{padding:28px;text-align:center;color:var(--muted);border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02)}
+
+    /* ===== Contact ===== */
+    .contact-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    form{display:flex;flex-direction:column;gap:12px}
+    input[type="text"], input[type="email"], textarea{
+      padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;outline:none;
+    }
+    textarea{min-height:140px;resize:vertical}
+    .contact-info{display:flex;flex-direction:column;gap:8px;color:var(--muted)}
+
+    /* Footer */
+    footer{margin-top:36px;padding:18px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
+    .socials{display:flex;gap:12px;align-items:center}
+    .socials a{color:var(--muted);text-decoration:none;font-weight:700}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr 320px}
+      .two-col{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+      .avatar{width:140px;height:140px}
+    }
+    @media (max-width:720px){
+      .hero{grid-template-columns:1fr}
+      nav{display:none}
+      .hamburger{display:flex}
+      .mobile-nav{display:flex;flex-direction:column}
+      .projects-grid{grid-template-columns:1fr}
+      .brand .name .title{font-size:14px}
+      body{padding-top:74px}
+    }
+
+    /* Focus outlines only when keyboard navigation */
+    :focus { outline: none; }
+    body.show-focus :focus { outline: 3px solid rgba(155,89,255,0.18); outline-offset:3px; border-radius:6px; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header / Navigation ===== -->
+  <header aria-label="Main header">
+    <div class="nav-wrap">
+      <div class="brand" aria-hidden="false">
+        <div class="logo" aria-hidden="true">FA</div>
+        <div class="name">
+          <span class="title">Fizza Ahmed</span>
+          <span class="sub">Web Developer</span>
+        </div>
+      </div>
+
+      <nav id="main-nav" aria-label="Primary navigation">
+        <a href="#home" class="nav-link" data-target="home">Home</a>
+        <a href="#about" class="nav-link" data-target="about">About</a>
+        <a href="#skills" class="nav-link" data-target="skills">Skills</a>
+        <a href="#projects" class="nav-link" data-target="projects">Projects</a>
+        <a href="#contact" class="nav-link" data-target="contact">Contact</a>
+      </nav>
+
+      <button class="hamburger" id="hambtn" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+
+      <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Page content container ===== -->
+  <main class="container">
+
+    <!-- ===== Hero / Home ===== -->
+    <section id="home" class="hero" aria-label="Home">
+      <div class="hero-card">
+        <h1>Building seamless web experiences</h1>
+        <p class="lead">I design and build responsive, accessible, and high-performance web interfaces using clean HTML, modern CSS, and Vanilla JavaScript.</p>
+
+        <div class="cta-row">
+          <button class="btn" id="view-projects">View Projects</button>
+          <a href="#contact" class="btn ghost">Get in Touch</a>
+        </div>
+
+        <div style="margin-top:18px;color:var(--muted);font-size:13px">
+          <strong>Approach:</strong> User-first design, clean maintainable code, and performance-minded development.
+        </div>
+      </div>
+
+      <aside class="avatar-card" aria-label="Profile card">
+        <div class="avatar" aria-hidden="false">
+          <!-- Inline SVG avatar placeholder -->
+          <img src="data:image/svg+xml;utf8,
+            <svg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'>
+              <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%239b59ff'/><stop offset='1' stop-color='%236ee7b7'/></linearGradient></defs>
+              <rect width='100%' height='100%' rx='48' fill='url(%23g)'/>
+              <g transform='translate(140,120)'>
+                <ellipse cx='160' cy='250' rx='110' ry='80' fill='%23082414' opacity='0.12'/>
+                <circle cx='160' cy='140' r='92' fill='%23ffffff' opacity='0.08'/>
+                <text x='160' y='160' font-size='52' text-anchor='middle' fill='%23ffffff' font-family='Arial' font-weight='700'>FA</text>
+              </g>
+            </svg>" alt="Fizza Ahmed avatar" />
+        </div>
+
+        <div style="text-align:center">
+          <div class="name">Fizza Ahmed</div>
+          <div class="role">Web Developer — Frontend Focus</div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <a class="btn" href="#projects">Projects</a>
+          <a class="btn ghost" href="#contact">Hire Me</a>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ===== About & Skills ===== -->
+    <section id="about" class="two-col" aria-label="About me">
+      <div class="card about">
+        <h2>About Me</h2>
+        <p>Hello — I'm Fizza, a web developer who loves crafting clean, accessible, and user-centered web experiences. I enjoy solving UX problems, building performant interfaces, and turning designs into reliable, maintainable code.</p>
+
+        <p><strong>Core values:</strong></p>
+        <div class="values" aria-hidden="false">
+          <div class="pill">Clean Code</div>
+          <div class="pill">User-centric Design</div>
+          <div class="pill">Performance</div>
+          <div class="pill">Accessibility</div>
+          <div class="pill">Collaboration</div>
+        </div>
+
+        <h3 style="margin-top:16px">How I work</h3>
+        <ul style="color:var(--muted);margin:8px 0 0 18px;padding:0">
+          <li>Start with user needs & structure content semantically.</li>
+          <li>Iterate UI with responsiveness and accessibility in mind.</li>
+          <li>Deliver maintainable code and clear documentation.</li>
+        </ul>
+      </div>
+
+      <aside class="card" id="skills" aria-label="Skills">
+        <h2>Skills</h2>
+        <p style="color:var(--muted);margin-top:6px">Core languages & concepts I use daily:</p>
+
+        <div style="margin-top:12px">
+          <div class="skills-grid">
+            <div class="skill">
+              <div class="label">HTML5 — Semantic markup</div>
+              <div class="bar-bg"><div class="bar" style="width:96%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label">CSS3 — Flexbox / Grid</div>
+              <div class="bar-bg"><div class="bar" style="width:94%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label">JavaScript (Vanilla)</div>
+              <div class="bar-bg"><div class="bar" style="width:86%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label">Responsive Design</div>
+              <div class="bar-bg"><div class="bar" style="width:96%"></div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;color:var(--muted)">
+            <strong>Tools & Concepts:</strong>
+            <div style="margin-top:8px">
+              <span class="pill" style="margin-right:6px">Git</span>
+              <span class="pill" style="margin-right:6px">Browser DevTools</span>
+              <span class="pill">Performance Optimization</span>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;color:var(--muted);font-size:13px">
+            <em>Familiar with Sass (knowledge), and basic build tooling concepts (npm scripts) — noted as knowledge only.</em>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ===== Projects ===== -->
+    <section id="projects" class="card" aria-label="Projects">
+      <div class="projects-header">
+        <div>
+          <h2 style="margin:0">Projects</h2>
+          <p style="color:var(--muted);margin:8px 0 0 0">Selected projects demonstrating front-end skills and interactive UI patterns.</p>
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Project filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="html">HTML/CSS</button>
+          <button class="filter-btn" data-filter="js">JavaScript</button>
+          <button class="filter-btn" data-filter="ux">UX / UI</button>
+        </div>
+      </div>
+
+      <div id="projects-wrap">
+        <div class="projects-grid" id="projects-grid" aria-live="polite">
+          <!-- Project 1 -->
+          <article class="project" data-cats="html ux">
+            <div class="thumb" aria-hidden="true">
+              <!-- SVG placeholder thumbnail -->
+              <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Project thumbnail">
+                <rect width="120" height="80" rx="8" fill="#071028"/>
+                <rect x="8" y="10" width="104" height="14" rx="3" fill="#0b1226"/>
+                <rect x="8" y="30" width="52" height="8" rx="2" fill="#132033"/>
+                <rect x="8" y="44" width="88" height="24" rx="4" fill="#0b1a2b"/>
+                <text x="60" y="48" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">Study Planner</text>
+              </svg>
+            </div>
+            <div class="meta">
+              <h3 class="title">Study Planner</h3>
+              <p class="desc">A study planner app that helps users schedule and track study sessions — responsive and focused on UX.</p>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">UX</span></div>
+            </div>
+            <div class="links">
+              <a class="link" href="https://fiza-study-planner.vercel.app/" target="_blank" rel="noopener">Live Demo</a>
+              <a class="link" href="#" target="_blank" rel="noopener">GitHub Repo</a>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project" data-cats="js">
+            <div class="thumb" aria-hidden="true">
+              <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <rect width="120" height="80" rx="8" fill="#071028"/>
+                <circle cx="30" cy="34" r="18" fill="#0b1226"></circle>
+                <rect x="58" y="18" width="52" height="12" rx="3" fill="#0b1226"/>
+                <rect x="58" y="36" width="36" height="12" rx="3" fill="#0b1a2b"/>
+                <text x="60" y="44" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Project 2</text>
+              </svg>
+            </div>
+            <div class="meta">
+              <h3 class="title">Interactive Project 2</h3>
+              <p class="desc">An interactive front-end demo with custom JavaScript behavior and animated elements.</p>
+              <div class="tags"><span class="tag">JavaScript</span><span class="tag">UI</span></div>
+            </div>
+            <div class="links">
+              <a class="link" href="https://rococo-raindrop-871649.netlify.app" target="_blank" rel="noopener">Live Demo</a>
+              <a class="link" href="#" target="_blank" rel="noopener">GitHub Repo</a>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project" data-cats="html js ux">
+            <div class="thumb" aria-hidden="true">
+              <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <rect width="120" height="80" rx="8" fill="#071028"/>
+                <rect x="8" y="10" width="104" height="14" rx="3" fill="#0b1226"/>
+                <rect x="8" y="28" width="104" height="10" rx="3" fill="#0b1226"/>
+                <rect x="8" y="42" width="88" height="30" rx="4" fill="#0b1a2b"/>
+                <text x="60" y="50" text-anchor="middle" fill="#ffd580" font-size="10" font-weight="700">Project 3</text>
+              </svg>
+            </div>
+            <div class="meta">
+              <h3 class="title">Project 3</h3>
+              <p class="desc">A responsive interactive site that demonstrates component patterns and JS-driven UI states.</p>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+            </div>
+            <div class="links">
+              <a class="link" href="https://dynamic-monstera-19a6bf.netlify.app/" target="_blank" rel="noopener">Live Demo</a>
+              <a class="link" href="#" target="_blank" rel="noopener">GitHub Repo</a>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project" data-cats="ux">
+            <div class="thumb" aria-hidden="true">
+              <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <rect width="120" height="80" rx="8" fill="#071028"/>
+                <rect x="12" y="16" width="96" height="48" rx="6" fill="#0b1226"/>
+                <circle cx="30" cy="40" r="8" fill="#0b1a2b"/>
+                <text x="60" y="44" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">Project 4</text>
+              </svg>
+            </div>
+            <div class="meta">
+              <h3 class="title">Project 4</h3>
+              <p class="desc">A prototype and microinteraction showcase emphasizing user flows and testing insights.</p>
+              <div class="tags"><span class="tag">UX</span><span class="tag">Prototype</span></div>
+            </div>
+            <div class="links">
+              <a class="link" href="https://exquisite-tartufo-470be0.netlify.app" target="_blank" rel="noopener">Live Demo</a>
+              <a class="link" href="#" target="_blank" rel="noopener">GitHub Repo</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- No results placeholder (hidden initially) -->
+        <div id="no-results" class="empty" style="display:none;">No projects match this filter.</div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" class="card" aria-label="Contact">
+      <h2>Contact</h2>
+      <div class="contact-grid">
+        <form id="contact-form" class="card" aria-label="Contact form" onsubmit="return false;">
+          <label style="font-weight:800">Send a message</label>
+          <input type="text" id="name" placeholder="Your name" required />
+          <input type="email" id="email" placeholder="Your email" required />
+          <textarea id="message" placeholder="Write your message..." required></textarea>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button class="btn" id="send-btn" type="submit">Send Message</button>
+            <button class="btn ghost" id="clear-btn" type="button">Clear</button>
+          </div>
+          <div id="form-note" style="color:var(--muted);font-size:13px;margin-top:8px">This form is static (no backend). Use the links to reach out directly.</div>
+        </form>
+
+        <aside class="card contact-info" aria-label="Contact information">
+          <div>
+            <strong>Email</strong>
+            <div style="color:var(--muted)">fizza.ahmed@example.com</div>
+          </div>
+
+          <div>
+            <strong>LinkedIn</strong>
+            <div style="color:var(--muted)"><a href="https://www.linkedin.com/in/fizza-ahmed-6b6886354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" style="color:var(--muted);text-decoration:none" target="_blank" rel="noopener">linkedin.com/in/fizza-ahmed-6b6886354</a></div>
+          </div>
+
+          <div>
+            <strong>GitHub</strong>
+            <div style="color:var(--muted)"><a href="#" style="color:var(--muted);text-decoration:none">github.com/fizza-ahmed</a></div>
+          </div>
+
+          <div style="margin-top:12px;color:var(--muted)">
+            <strong>Availability</strong>
+            <div>Open to freelance and contract work.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>© <span id="year"></span> Fizza Ahmed. All rights reserved.</div>
+        <div class="socials">
+          <a href="https://github.com/fizza-ahmed" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/fizza-ahmed-6b6886354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:fizza.ahmed@example.com">Email</a>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ===== JavaScript (All in-file) ===== -->
+  <script>
+    /**********************
+     * Utility & DOM refs *
+     **********************/
+    const navLinks = document.querySelectorAll('nav a.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const hamburger = document.getElementById('hambtn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const viewProjectsBtn = document.getElementById('view-projects');
+    const yearSpan = document.getElementById('year');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectsGrid = document.getElementById('projects-grid');
+    const projects = Array.from(document.querySelectorAll('.project'));
+    const noResults = document.getElementById('no-results');
+    const sendBtn = document.getElementById('send-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const form = document.getElementById('contact-form');
+
+    /***********************
+     * Basic initial setup *
+     ***********************/
+    yearSpan.textContent = new Date().getFullYear();
+
+    /* Smooth scrolling helper (animated) */
+    function smoothScrollTo(targetY, duration = 600) {
+      const startY = window.scrollY || window.pageYOffset;
+      const distance = targetY - startY;
+      const startTime = performance.now();
+
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
+
+      function animate(now) {
+        const timeElapsed = now - startTime;
+        const t = Math.min(1, timeElapsed / duration);
+        const eased = easeInOutCubic(t);
+        window.scrollTo(0, startY + (distance * eased));
+        if (timeElapsed < duration) requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    /* Scroll to anchor target by id */
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 68; // offset for sticky nav
+      smoothScrollTo(top, 600);
+    }
+
+    /*************************
+     * Navigation interactions
+     *************************/
+    // Desktop nav links
+    navLinks.forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const target = this.getAttribute('data-target') || this.getAttribute('href').substring(1);
+        scrollToId(target);
+        // If mobile open, close
+        if (hamburger.classList.contains('open')) toggleMobileNav();
+      });
+    });
+
+    // Mobile nav links
+    mobileLinks.forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const target = this.getAttribute('href').substring(1);
+        toggleMobileNav();
+        scrollToId(target);
+      });
+    });
+
+    // CTA view projects
+    viewProjectsBtn.addEventListener('click', (e) => {
+      scrollToId('projects');
+    });
+
+    // Hamburger toggle
+    function toggleMobileNav(){
+      const open = hamburger.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mobileNav.style.display = open ? 'flex' : 'none';
+      mobileNav.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    hamburger.addEventListener('click', toggleMobileNav);
+
+    /***********************
+     * Project filter logic *
+     ***********************/
+    function applyFilter(filter) {
+      const f = filter === 'all' ? null : filter;
+      let visibleCount = 0;
+      projects.forEach(p => {
+        const cats = p.getAttribute('data-cats').split(/\s+/);
+        const match = !f || cats.includes(f);
+        p.style.display = match ? 'flex' : 'none';
+        if (match) visibleCount++;
+      });
+      noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilter(btn.getAttribute('data-filter'));
+      });
+    });
+
+    // default show all
+    applyFilter('all');
+
+    /*******************************
+     * Scroll-spy (active nav link)
+     * Uses IntersectionObserver
+     *******************************/
+    const sections = document.querySelectorAll('main section[id]');
+    const options = {
+      root: null, rootMargin: '0px 0px -55% 0px', threshold: 0
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          // set active on nav links
+          navLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('data-target') === id);
+          });
+          // Also highlight mobile nav if present
+          mobileLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, options);
+
+    sections.forEach(sec => observer.observe(sec));
+
+    /************************
+     * Form behavior (static)
+     ************************/
+    sendBtn.addEventListener('click', () => {
+      // Basic validation (HTML also does it)
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!name || !email || !message) {
+        alert('Please fill in all fields before sending.');
+        return;
+      }
+      // Simulate send (no backend)
+      sendBtn.textContent = 'Sent ✓';
+      sendBtn.disabled = true;
+      setTimeout(() => {
+        alert('Message simulated. In a real site this would send to a backend or email service.');
+      }, 200);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      form.reset();
+      sendBtn.textContent = 'Send Message';
+      sendBtn.disabled = false;
+    });
+
+    /**************************
+     * Accessibility Enhancements
+     **************************/
+    // Close mobile nav when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileNav.contains(e.target) && !hamburger.contains(e.target) && hamburger.classList.contains('open')) {
+        toggleMobileNav();
+      }
+    });
+
+    // Close mobile nav on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && hamburger.classList.contains('open')) toggleMobileNav();
+    });
+
+    /**************************
+     * Optional: keyboard focus outline toggle
+     **************************/
+    function handleFirstTab(e){
+      if (e.key === 'Tab') {
+        document.body.classList.add('show-focus');
+        window.removeEventListener('keydown', handleFirstTab);
+      }
+    }
+    window.addEventListener('keydown', handleFirstTab);
+  </script>
+</body>
+</html>
